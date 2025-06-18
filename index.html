@@ -101,8 +101,8 @@
             background: rgba(20, 20, 30, 0.8);
             backdrop-filter: blur(20px);
             z-index: 100;
-            padding: 1rem 0;
-            transition: all 0.4s ease;
+            padding: 1.25rem 0;
+            transition: all 0.4s ease, transform 0.4s cubic-bezier(0.4,0,0.2,1);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -110,6 +110,11 @@
             background: rgba(10, 10, 20, 0.95);
             backdrop-filter: blur(25px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        nav.hide-on-scroll {
+            transform: translateY(-120%);
+            pointer-events: none;
         }
 
         .nav-container {
@@ -138,7 +143,7 @@
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            gap: 2.5rem;
         }
 
         .nav-links a {
@@ -805,13 +810,15 @@
 
     <nav id="navbar">
         <div class="nav-container">
-            <div class="logo" onclick="scrollToTop()">Portfolio</div>
-            <ul class="nav-links">
-                <li><a href="#home" onclick="smoothScroll('#home')">Home</a></li>
-                <li><a href="#about" onclick="smoothScroll('#about')">About</a></li>
-                <li><a href="#projects" onclick="smoothScroll('#projects')">Projects</a></li>
-                <li><a href="#contact" onclick="smoothScroll('#contact')">Contact</a></li>
-            </ul>
+            <!-- <div class="logo" onclick="scrollToTop()">Portfolio</div> -->
+            <div style="flex: 1; display: flex; justify-content: center;">
+                <ul class="nav-links">
+                    <li><a href="#home" onclick="smoothScroll('#home')">Home</a></li>
+                    <li><a href="#about" onclick="smoothScroll('#about')">About</a></li>
+                    <li><a href="#projects" onclick="smoothScroll('#projects')">Projects</a></li>
+                    <li><a href="#contact" onclick="smoothScroll('#contact')">Contact</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
 
@@ -1061,7 +1068,8 @@
             }, 200);
         }
 
-        // Enhanced navbar scroll effect
+        // Enhanced navbar scroll effect with hide-on-scroll
+        let lastScrollY = window.scrollY;
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
             if (window.scrollY > 100) {
@@ -1069,6 +1077,13 @@
             } else {
                 nav.classList.remove('scrolled');
             }
+            // Hide nav on scroll down, show on scroll up
+            if (window.scrollY > lastScrollY && window.scrollY > 100) {
+                nav.classList.add('hide-on-scroll');
+            } else {
+                nav.classList.remove('hide-on-scroll');
+            }
+            lastScrollY = window.scrollY;
         });
 
         // Interactive hover effects for all clickable elements
